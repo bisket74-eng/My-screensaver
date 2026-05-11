@@ -24,28 +24,28 @@
         .time-banner {
             background: radial-gradient(circle, rgba(0,119,190,0.8) 0%, rgba(0,119,190,0) 85%);
             font-family: 'Orbitron', sans-serif; color: #00e5ff;
-            animation: flyLeft 10s ease-in-out infinite alternate;
+            animation: flyLeft 18s ease-in-out infinite alternate;
         }
 
         .weather-banner {
             background: radial-gradient(circle, rgba(255,140,0,0.8) 0%, rgba(255,140,0,0) 85%);
             font-family: 'Montserrat', sans-serif; align-self: flex-end;
-            animation: flyRight 12s ease-in-out infinite alternate;
+            animation: flyRight 16s ease-in-out infinite alternate;
         }
 
         .upcoming-banner {
             background: radial-gradient(circle, rgba(155, 89, 182, 0.8) 0%, rgba(155, 89, 182, 0) 85%);
             font-family: 'Raleway', sans-serif;
-            animation: flyLeft 11s ease-in-out infinite alternate, pulse 4s infinite alternate;
+            animation: flyLeft 14s ease-in-out infinite alternate, pulse 4s infinite alternate;
         }
 
         /* Adjusted animations to travel further across the screen */
         @keyframes flyLeft { 
-            from { left: -750px; } 
+            from { left: -550px; } 
             to { left: calc(100vw - 100px); } 
         }
         @keyframes flyRight { 
-            from { right: -750px; } 
+            from { right: -550px; } 
             to { right: calc(100vw - 100px); } 
         }
         
