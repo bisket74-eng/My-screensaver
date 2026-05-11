@@ -13,56 +13,59 @@
             align-items: center; 
             padding: 0 60px; 
             position: absolute;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            /* Stronger backgrounds so you can see the banners clearly */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
             will-change: transform, opacity;
         }
 
         .time-banner {
             top: 10%;
-            background: radial-gradient(circle at center, rgba(0,229,255,0.2) 0%, rgba(0,119,190,0) 80%);
+            background: radial-gradient(circle at center, rgba(0,229,255,0.6) 0%, rgba(0,80,120,0.9) 100%);
             color: #00e5ff;
             animation: flyShatterLeft 25s linear infinite;
         }
 
         .weather-banner {
             top: 40%;
-            background: radial-gradient(circle at center, rgba(255,183,77,0.2) 0%, rgba(255,140,0,0) 80%);
+            background: radial-gradient(circle at center, rgba(255,183,77,0.6) 0%, rgba(200,100,0,0.9) 100%);
             color: #ffb74d;
             animation: flyShatterRight 28s linear infinite;
         }
 
         .upcoming-banner {
             top: 70%;
-            background: radial-gradient(circle at center, rgba(225,190,231,0.2) 0%, rgba(155, 89, 182, 0) 80%);
+            background: radial-gradient(circle at center, rgba(225,190,231,0.6) 0%, rgba(100, 40, 150, 0.9) 100%);
             color: #e1bee7;
             animation: flyShatterLeft 30s linear infinite;
         }
 
-        /* Movement Logic */
+        /* Movement */
         @keyframes flyShatterLeft {
             0% { transform: translateX(-1000px); opacity: 1; }
             90% { transform: translateX(calc(100vw - 300px)); opacity: 1; }
-            95% { transform: translateX(calc(100vw - 50px)); opacity: 0; }
-            100% { transform: translateX(calc(100vw + 200px)); opacity: 0; }
+            95% { transform: translateX(calc(100vw + 100px)); opacity: 0; }
+            100% { transform: translateX(calc(100vw + 500px)); opacity: 0; }
         }
 
         @keyframes flyShatterRight {
             0% { transform: translateX(100vw); opacity: 1; }
-            90% { transform: translateX(100px); opacity: 1; }
-            95% { transform: translateX(-150px); opacity: 0; }
+            90% { transform: translateX(150px); opacity: 1; }
+            95% { transform: translateX(-200px); opacity: 0; }
             100% { transform: translateX(-1000px); opacity: 0; }
         }
 
-        /* Shard Styles */
-        .shard {
+        /* Large Glass Shard Styles */
+        .glass-shard {
             position: absolute;
             pointer-events: none;
-            opacity: 0.8;
-            filter: blur(1px);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(4px);
             will-change: transform, opacity;
+            z-index: 999;
         }
 
         @keyframes floatShard {
@@ -70,8 +73,8 @@
             100% { transform: translate(var(--tx), var(--ty)) rotate(var(--tr)); opacity: 0; }
         }
 
-        .label { font-size: 2rem; text-transform: uppercase; letter-spacing: 6px; font-weight: 800; opacity: 0.8; display: block; margin-bottom: 10px; }
-        .content { font-size: 4rem; text-shadow: 2px 2px 25px rgba(0,0,0,0.9); line-height: 1.1; font-weight: 800; }
+        .label { font-size: 2rem; text-transform: uppercase; letter-spacing: 6px; font-weight: 800; opacity: 0.9; display: block; margin-bottom: 10px; }
+        .content { font-size: 4.3rem; text-shadow: 2px 2px 30px rgba(0,0,0,1); line-height: 1.1; font-weight: 800; }
         #event { transition: opacity 1s ease-in-out; }
     </style>
 </head>
@@ -91,7 +94,7 @@
 <script>
     function updateTime() {
         const now = new Date();
-        document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+        document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit', second:'2-digit'});
     }
 
     async function getWeather() {
@@ -105,7 +108,7 @@
         }
     }
 
-    const events = ["Camino Departure: Aug 21", "Trek Planning: Late Aug", "Retirement Milestone: Aug 2031"];
+    const events = ["Camino Departure: Aug 21", "Cali for the 4th", "Retirement Milestone: Aug 2031"];
     let eventIdx = 0;
     const eventElement = document.getElementById('event');
 
@@ -118,46 +121,48 @@
         }, 1000);
     }
 
-    // Glass Shard Effect
-    function createShards(x, y, color) {
-        for (let i = 0; i < 12; i++) {
+    // New Large Clear Glass Shard Logic
+    function createImpactShards(x, y) {
+        for (let i = 0; i < 8; i++) {
             const shard = document.createElement('div');
-            shard.className = 'shard';
+            shard.className = 'glass-shard';
             
-            // Random triangle shape
-            const size = Math.random() * 40 + 10;
-            shard.style.width = '0';
-            shard.style.height = '0';
-            shard.style.borderLeft = `${size/2}px solid transparent`;
-            shard.style.borderRight = `${size/2}px solid transparent`;
-            shard.style.borderBottom = `${size}px solid ${color}`;
+            // Random large jagged shapes
+            const w = Math.random() * 100 + 50;
+            const h = Math.random() * 100 + 50;
+            shard.style.width = w + 'px';
+            shard.style.height = h + 'px';
+            
+            // Random sharp angles using clip-path
+            shard.style.clipPath = `polygon(${Math.random()*20}% ${Math.random()*20}%, ${80+Math.random()*20}% ${Math.random()*20}%, ${50+Math.random()*50}% ${80+Math.random()*20}%, ${Math.random()*20}% ${80+Math.random()*20}%)`;
+            
             shard.style.left = x + 'px';
             shard.style.top = y + 'px';
 
-            // Random flight path
-            const tx = (Math.random() - 0.5) * 800;
-            const ty = (Math.random() - 0.5) * 800;
-            const tr = Math.random() * 720;
+            // Shards fly "inward" from the impact point
+            const tx = (x > window.innerWidth / 2) ? -(Math.random() * 600) : (Math.random() * 600);
+            const ty = (Math.random() - 0.5) * 400;
+            const tr = (Math.random() - 0.5) * 500;
             
             shard.style.setProperty('--tx', `${tx}px`);
             shard.style.setProperty('--ty', `${ty}px`);
             shard.style.setProperty('--tr', `${tr}deg`);
-            shard.style.animation = `floatShard ${Math.random() * 4 + 3}s ease-out forwards`;
+            shard.style.animation = `floatShard ${Math.random() * 3 + 2}s cubic-bezier(0.16, 1, 0.3, 1) forwards`;
 
             document.getElementById('mainContainer').appendChild(shard);
-            setTimeout(() => shard.remove(), 7000);
+            setTimeout(() => shard.remove(), 5000);
         }
     }
 
-    // Trigger shards at the edges
     function checkShatter() {
         const banners = document.querySelectorAll('.banner');
         banners.forEach(b => {
             const rect = b.getBoundingClientRect();
-            // If banner is near the left or right screen edge and is fading out
-            if ((rect.right > window.innerWidth - 100 || rect.left < 100) && getComputedStyle(b).opacity < 0.5) {
-                const color = getComputedStyle(b).color;
-                createShards(rect.left + rect.width/2, rect.top + rect.height/2, color);
+            // Check if banner is hitting the far edges
+            if (rect.right > window.innerWidth - 50 && rect.right < window.innerWidth) {
+                createImpactShards(window.innerWidth - 20, rect.top + rect.height/2);
+            } else if (rect.left < 50 && rect.left > 0) {
+                createImpactShards(20, rect.top + rect.height/2);
             }
         });
     }
@@ -165,7 +170,7 @@
     setInterval(updateTime, 1000);
     setInterval(cycleEvents, 10000);
     setInterval(getWeather, 600000);
-    setInterval(checkShatter, 2000); // Check for shatter point every 2 seconds
+    setInterval(checkShatter, 500); // Faster check for precise impact
     
     updateTime();
     getWeather();
