@@ -25,7 +25,7 @@
             background: radial-gradient(circle, rgba(0,119,190,0.8) 0%, rgba(0,119,190,0) 85%);
             font-family: 'Montserrat', sans-serif; 
             color: #00e5ff;
-            animation: flyLeft 22s ease-in-out infinite alternate;
+            animation: flyLeft 30s ease-in-out infinite alternate;
         }
 
         .weather-banner {
@@ -33,14 +33,14 @@
             font-family: 'Montserrat', sans-serif; 
             color: #ffb74d;
             align-self: flex-end;
-            animation: flyRight 26s ease-in-out infinite alternate;
+            animation: flyRight 22s ease-in-out infinite alternate;
         }
 
         .upcoming-banner {
             background: radial-gradient(circle, rgba(155, 89, 182, 0.8) 0%, rgba(155, 89, 182, 0) 85%);
             font-family: 'Montserrat', sans-serif;
             color: #e1bee7;
-            animation: flyLeft 24s ease-in-out infinite alternate, pulse 4s infinite alternate;
+            animation: flyLeft 25s ease-in-out infinite alternate, pulse 4s infinite alternate;
         }
 
         #event { transition: opacity 1s ease-in-out; opacity: 1; }
@@ -91,7 +91,7 @@
 <script>
     function updateTime() {
         const now = new Date();
-        document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+        document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit',});
     }
 
     async function getWeather() {
